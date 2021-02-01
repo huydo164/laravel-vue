@@ -21,5 +21,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['namespace' => $namespace], function(){
-    Route::resource('blogs', 'BlogsController');
+    Route::apiResource('blogs', 'BlogsController');
 });

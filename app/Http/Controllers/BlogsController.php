@@ -8,6 +8,9 @@ class BlogsController extends Controller
 {
     public function index()
     {
+        if(request()->input('title')){
+            return Blogs::where('title', 'LIKE', '%'.request()->input('title').'%')->get();
+        }
         return Blogs::all();
     }
 
@@ -19,6 +22,14 @@ class BlogsController extends Controller
     public function store(Request $request)
     {
 
+        $request->validate([
+            'title' => 'required',
+            'des' => 'required',
+            'detail' => 'required',
+            'category' => 'required',
+            'public' => 'required',
+            'position' => 'required',
+        ]);
         $blog = Blogs::create($request->all());
 
         return response()->json($blog, 201);
@@ -26,7 +37,16 @@ class BlogsController extends Controller
 
     public function update(Request $request, Blogs $blog)
     {
-        $blog->update($request->all());
+        $request->validate([
+            'title' => 'required',
+            'des' => 'required',
+            'detail' => 'required',
+            'category' => 'required',
+            'public' => 'required',
+            'position' => 'required',
+        ]);
+        
+        $blog->update($request->only(['title', 'des', 'detail', 'category', 'public', 'data_pubblic', 'position', 'thumbs']));
 
         return response()->json([
             'messages' => 'Update thành công',
